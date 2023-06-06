@@ -26,7 +26,6 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           required
           className="form_text-area"
         />
-
         <label>
           <span className="font-satoshi font-semibold  text-base text-gray-700">
             Tag{" "}
@@ -42,21 +41,20 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           required
           className="form_input"
         />
+        <div className="flex-end mx-3 mb-5 gap-4">
+          <Link href="/" className="text-gray-500 text-sm">
+            Cancel
+          </Link>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
+          >
+            {submitting ? `${type}...` : type}
+          </button>
+        </div>{" "}
       </form>
-
-      <div className="flex-end mx-3 mb-5 gap-4">
-        <Link href="/" className="text-gray-500 text-sm">
-          Cancel
-        </Link>
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
-        >
-          {submitting ? `${type}...` : type}
-        </button>
-      </div>
     </section>
   );
 };

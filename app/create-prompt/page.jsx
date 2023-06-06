@@ -3,37 +3,57 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import Form from "@components/Form";
-import { Router } from "next/router";
 
 const CreatePrompt = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({ prompt: "", tag: "" });
+
   const createPrompt = async (e) => {
     e.preventDefault();
-
+    console.log("submitted");
     setSubmitting(true);
 
-    try {
-      const response = await fetch("/api/prompt/new", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt: post.prompt,
-          userId: session?.user.id,
-          tag: post.tag,
-        }),
-      });
-
-      if (response.ok) {
+    axios
+      .post("/api/prompt/new", {
+        prompt: post.prompt,
+        userId: session?.user.id,
+        tag: post.tag,
+      })
+      .then((res) => {
+        console.log("successful");
+        setSubmitting(false);
         router.push("/");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSubmitting(false);
-    }
+      })
+      .catch((err) => console.log(err));
   };
+
+  //     try {
+  //       const response = await fetch("/api/prompt/new", {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //           prompt: post.prompt,
+  //           userId: session?.user.id,
+  //           tag: post.tag,
+  //         }),
+  //       });
+
+  //       if (response.ok) {
+  //         router.push("/");
+  //       } else {
+  //         console.log("lool");
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setSubmitting(false);
+  //     }
+  //   };
 
   return (
     <Form
